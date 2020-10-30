@@ -18,13 +18,13 @@ const App = () => {
 
 	const genCertificate = (formData, canvasImage) => {
 		const profile = {
-			lastname: formData?.nom,
-			firstname: formData?.prenom,
-			birthday: formData?.dateNaissance,
-			placeofbirth: formData?.lieuNaissance,
-			address: formData?.adresse,
-			zipcode: formData?.codePostal,
-			city: formData?.ville,
+			lastname: formData?.nom || "",
+			firstname: formData?.prenom || "",
+			birthday: formData?.dateNaissance || "",
+			placeofbirth: formData?.lieuNaissance || "",
+			address: formData?.adresse || "",
+			zipcode: formData?.codePostal || "",
+			city: formData?.ville || "",
 		}
 
 		generatePdf(profile, "achats", certificate, canvasImage)
