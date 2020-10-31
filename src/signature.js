@@ -6,10 +6,10 @@ import { useLocalStorage } from "react-use-storage"
 const Signature = () => {
 	const canvas = useRef(null)
 	const [canvasData, setCanvasData, removeCanvasData] = useLocalStorage(
-		"signatureData"
+		"easyAttestsignatureData"
 	)
 	const [canvasImage, setCanvasImage, removeCanvasImage] = useLocalStorage(
-		"signatureImage"
+		"easyAttestsignatureImage"
 	)
 	const exportImage = ({ canvas }) => {
 		try {

@@ -28,7 +28,7 @@ const schema = Joi.object({
 })
 
 const ProfilForm = () => {
-	const [formData, setFormData, removeFormData] = useLocalStorage("formData")
+	const [formData, setFormData] = useLocalStorage("easyAttestformData")
 
 	const { register, handleSubmit, errors } = useForm({
 		resolver: joiResolver(schema),
