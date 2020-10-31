@@ -107,7 +107,13 @@ const ProfilForm = () => {
 
 	return (
 		<Container>
-			<Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+			<Form
+				onSubmit={handleSubmit(wtv => {
+					setFormData(Object.assign({}, formData, getValues()))
+					onSubmit(wtv)
+				})}
+				autoComplete="off"
+			>
 				<Row>
 					<Col>
 						<FormInput
@@ -193,14 +199,7 @@ const ProfilForm = () => {
 
 				<Row>
 					<Col>
-						<Button
-							type="submit"
-							color="primary"
-							className="mt-4"
-							onClick={() => {
-								setFormData(Object.assign({}, formData, getValues()))
-							}}
-						>
+						<Button type="submit" color="primary" className="mt-4">
 							GÉNÉRER ATTESTATION
 						</Button>
 					</Col>
