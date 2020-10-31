@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react"
+import React, { cloneElement, memo } from "react"
 import {
 	Container,
 	Row,
@@ -20,57 +20,46 @@ import Signature from "./signature"
 const schema = Joi.object({
 	prenom: Joi.string().min(3).required(),
 	nom: Joi.string().min(3).required(),
-	dateNaissance: Joi.string().min(9).max(10).required(),
+	dateNaissance: Joi.string().min(10).max(10).required(),
 	lieuNaissance: Joi.string().min(3).required(),
 	adresse: Joi.string().min(3).required(),
 	ville: Joi.string().min(3).required(),
 	codePostal: Joi.string().regex(/^\d+$/).min(5).max(5).required(),
 })
 
-const ProfilForm = () => {
-	const [formData, setFormData] = useLocalStorage("easyAttestformData")
-
-	const { register, handleSubmit, errors } = useForm({
-		resolver: joiResolver(schema),
-	})
-
-	// Display help or error message
-	const helpOrError = (key, placeholder) => {
-		let message = ""
-
-		if (errors[key]) {
-			const error = errors[key]
-			if (error.type === "string.empty" || error.type === "any.required")
-				message = "Ce champ est requis"
-			else if (error.type === "string.max") message = "Trop long"
-			else if (error.type === "string.min") message = "Trop court"
-			else if (error.type === "any.only") message = "Valeur interdite"
-			else message = "Mauvais format"
-		}
-
-		return message ? (
-			<FormText color="danger">{message}</FormText>
-		) : (
-			<FormText color="secondary">
-				<b>Exemple</b>: {placeholder}
-			</FormText>
-		)
-	}
-
-	// Handle form submit
-	const onSubmit = data => {
-		setFormData(data)
-
-		return false
-	}
-
-	const FormInput = ({
+const FormInput = memo(
+	({
 		name,
 		displayName,
 		placeholder,
 		type = "text",
 		children,
+		errors,
+		register,
 	}) => {
+		// Display help or error message
+		const helpOrError = (key, placeholder) => {
+			let message = ""
+
+			if (errors[key]) {
+				const error = errors[key]
+				if (error.type === "string.empty" || error.type === "any.required")
+					message = "Ce champ est requis"
+				else if (error.type === "string.max") message = "Trop long"
+				else if (error.type === "string.min") message = "Trop court"
+				else if (error.type === "any.only") message = "Valeur interdite"
+				else message = "Mauvais format"
+			}
+
+			return message ? (
+				<FormText color="danger">{message}</FormText>
+			) : (
+				<FormText color="secondary">
+					<b>Exemple</b>: {placeholder}
+				</FormText>
+			)
+		}
+
 		return (
 			<FormGroup>
 				<Label for={name}>{displayName}</Label>
@@ -79,37 +68,63 @@ const ProfilForm = () => {
 						type: type,
 						name: name,
 						id: name,
+						key: `formInput_${name}`,
 						placeholder: placeholder,
-						value: formData?.[name],
 						htmlRef: register,
+						autoComplete: "off",
 					})
 				) : (
 					<Input
 						type={type}
 						name={name}
 						id={name}
+						key={`formInput_${name}`}
 						placeholder={placeholder}
-						defaultValue={formData?.[name]}
 						innerRef={register}
+						autoComplete="off"
 					/>
 				)}
 				{helpOrError(name, placeholder)}
 			</FormGroup>
 		)
 	}
+)
+
+const ProfilForm = () => {
+	const [formData, setFormData] = useLocalStorage("easyAttestformData")
+	const { register, handleSubmit, errors, getValues } = useForm({
+		mode: "onSubmit",
+		reValidateMode: "onSubmit",
+		defaultValues: formData,
+		resolver: joiResolver(schema),
+	})
+
+	// Handle form submit
+	const onSubmit = data => {
+		setFormData(data)
+		return false
+	}
 
 	return (
 		<Container>
-			<Form onSubmit={handleSubmit(onSubmit)}>
+			<Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
 				<Row>
 					<Col>
 						<FormInput
 							name="prenom"
 							displayName="Prénom"
 							placeholder="Camille"
+							register={register}
+							errors={errors}
 						/>
 
-						<FormInput name="nom" displayName="Nom" placeholder="Dupont" />
+						<FormInput
+							name="nom"
+							displayName="Nom"
+							placeholder="Dupont"
+							register={register}
+							errors={errors}
+						/>
 					</Col>
 
 					<Col>
@@ -117,6 +132,8 @@ const ProfilForm = () => {
 							name="dateNaissance"
 							displayName="Date de naissance"
 							placeholder="01/01/1970"
+							register={register}
+							errors={errors}
 						>
 							<Cleave
 								options={{
@@ -125,6 +142,7 @@ const ProfilForm = () => {
 									numericOnly: true,
 								}}
 								className="form-control"
+								value={formData?.["dateNaissance"]}
 							/>
 						</FormInput>
 
@@ -132,6 +150,8 @@ const ProfilForm = () => {
 							name="lieuNaissance"
 							displayName="Lieu de naissance"
 							placeholder="Paris"
+							register={register}
+							errors={errors}
 						/>
 					</Col>
 				</Row>
@@ -142,14 +162,24 @@ const ProfilForm = () => {
 							name="adresse"
 							displayName="Adresse"
 							placeholder="99 avenue de France"
+							register={register}
+							errors={errors}
 						/>
 
-						<FormInput name="ville" displayName="Ville" placeholder="Paris" />
+						<FormInput
+							name="ville"
+							displayName="Ville"
+							placeholder="Paris"
+							register={register}
+							errors={errors}
+						/>
 
 						<FormInput
 							name="codePostal"
 							displayName="Code postal"
 							placeholder="75001"
+							register={register}
+							errors={errors}
 						/>
 					</Col>
 				</Row>
@@ -163,7 +193,14 @@ const ProfilForm = () => {
 
 				<Row>
 					<Col>
-						<Button type="submit" color="primary" className="mt-4">
+						<Button
+							type="submit"
+							color="primary"
+							className="mt-4"
+							onClick={() => {
+								setFormData(Object.assign({}, formData, getValues()))
+							}}
+						>
 							GÉNÉRER ATTESTATION
 						</Button>
 					</Col>
