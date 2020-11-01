@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form"
 import { joiResolver } from "@hookform/resolvers/joi"
 import Cleave from "cleave.js/react"
 import { useLocalStorage } from "react-use-storage"
+import LZString from "lz-string"
 import Signature from "./signature"
 
 const schema = Joi.object({
@@ -92,6 +93,7 @@ const FormInput = memo(
 
 const ProfilForm = () => {
 	const [formData, setFormData] = useLocalStorage("easyAttestformData")
+	const [signature] = useLocalStorage("easyAttestsignatureImage")
 	const { register, handleSubmit, errors, getValues } = useForm({
 		mode: "onSubmit",
 		reValidateMode: "onSubmit",
@@ -102,6 +104,20 @@ const ProfilForm = () => {
 	// Handle form submit
 	const onSubmit = data => {
 		setFormData(data)
+
+		if (signature)
+			if (signature.length < 9e3) data.signature = signature
+			else {
+				alert("Signature trop complexe. Utilisez une signature plus simple")
+				return false
+			}
+
+		const encodedData = LZString.compressToEncodedURIComponent(
+			JSON.stringify(data)
+		)
+
+		window.open(`${process.env.URL}/api/attestation?data=${encodedData}`)
+
 		return false
 	}
 

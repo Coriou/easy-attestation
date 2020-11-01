@@ -1,7 +1,6 @@
 import React from "react"
 import { Container, Row, Col } from "reactstrap"
 
-import PDF from "./pdf"
 import ProfilForm from "./form"
 
 const App = () => {
@@ -10,9 +9,6 @@ const App = () => {
 			<Row>
 				<Col>
 					<ProfilForm />
-				</Col>
-				<Col>
-					<PDF />
 				</Col>
 			</Row>
 		</Container>

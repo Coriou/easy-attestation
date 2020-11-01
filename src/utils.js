@@ -55,7 +55,7 @@ export async function generatePdf(profile, reasons, pdfBase, canvasImage) {
 		`Motifs: ${reasons}`,
 	].join(";\n ")
 
-	const existingPdfBytes = await fetch(pdfBase).then(res => res.arrayBuffer())
+	const existingPdfBytes = pdfBase
 
 	const pdfDoc = await PDFDocument.load(existingPdfBytes)
 
@@ -137,7 +137,7 @@ export async function generatePdf(profile, reasons, pdfBase, canvasImage) {
 
 	const pdfBytes = await pdfDoc.save()
 
-	return [pdfBytes, new Blob([pdfBytes], { type: "application/pdf" })]
+	return pdfBytes
 }
 
 function getIdealFontSize(font, text, maxWidth, minSize, defaultSize) {

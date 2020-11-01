@@ -5,3 +5,5 @@ build
 .cache
 .log
 dump
+
+.vercel

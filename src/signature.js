@@ -23,8 +23,7 @@ const Signature = () => {
 			let storedImageData = context.getImageData(0, 0, width, height)
 			var compositeOperation = context.globalCompositeOperation
 			context.globalCompositeOperation = "destination-over"
-			let fileType = "png"
-			let imageData = canvasToExport.toDataURL(`image/${fileType}`)
+			let imageData = canvasToExport.toDataURL(`image/png`)
 			context.clearRect(0, 0, width, height)
 			context.putImageData(storedImageData, 0, 0)
 			context.globalCompositeOperation = compositeOperation
