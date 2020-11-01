@@ -1,3 +1,5 @@
+process.env.TZ = "Europe/Paris"
+
 const { generatePdf } = require("../src/utils")
 const { readFileSync } = require("fs")
 const { join } = require("path")
