@@ -2,7 +2,7 @@
 
 ## Utilisation
 
-1. Visitez [easy-attestation.vercel.app](easy-attestation.vercel.app)
+1. Visitez [easy-attestation.vercel.app](https://easy-attestation.vercel.app)
 2. Remplissez le formulaire (il sera sauvegardé dans votre navigateur)
 3. Griffonnez une signature
 4. Générez l'attestation
