@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form"
 import { joiResolver } from "@hookform/resolvers/joi"
 import Cleave from "cleave.js/react"
 import { useLocalStorage } from "react-use-storage"
-import LZString from "lz-string"
 import Signature from "./signature"
 
 const schema = Joi.object({
@@ -27,6 +26,21 @@ const schema = Joi.object({
 	ville: Joi.string().min(3).required(),
 	codePostal: Joi.string().regex(/^\d+$/).min(5).max(5).required(),
 })
+
+function redirectPost(url, dataToPost) {
+	var form = document.createElement("form")
+	document.body.appendChild(form)
+	form.method = "post"
+	form.action = url
+	for (var name in dataToPost) {
+		var input = document.createElement("input")
+		input.type = "hidden"
+		input.name = name
+		input.value = dataToPost[name]
+		form.appendChild(input)
+	}
+	form.submit()
+}
 
 const FormInput = memo(
 	({
@@ -112,11 +126,7 @@ const ProfilForm = () => {
 				return false
 			}
 
-		const encodedData = LZString.compressToEncodedURIComponent(
-			JSON.stringify(data)
-		)
-
-		window.open(`${process.env.URL}/api/attestation?data=${encodedData}`)
+		redirectPost(`${process.env.URL}/api/attestation`, data)
 
 		return false
 	}

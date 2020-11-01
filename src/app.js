@@ -5,7 +5,7 @@ import ProfilForm from "./form"
 
 const App = () => {
 	return (
-		<Container fluid>
+		<Container>
 			<Row>
 				<Col>
 					<ProfilForm />

@@ -1,22 +1,13 @@
 const { generatePdf } = require("../src/utils")
 const { readFileSync } = require("fs")
 const { join } = require("path")
-const atob = require("atob")
-const LZString = require("lz-string")
 
 const certificate = readFileSync(
 	join(__dirname, "../", "src", "certificate.pdf")
 )
 
 module.exports = async (req, res) => {
-	let data = LZString.decompressFromEncodedURIComponent(req.query.data)
-
-	try {
-		data = JSON.parse(data)
-	} catch (error) {
-		console.error(error)
-		data = {}
-	}
+	let data = req.body
 
 	const canvasImage = data.signature || false
 
