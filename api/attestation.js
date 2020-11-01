@@ -11,6 +11,12 @@ const certificate = readFileSync(
 module.exports = async (req, res) => {
 	let data = req.body
 
+	if (!data)
+		return res.json({
+			error: true,
+			message: "Utilisez le formulaire pour générez un PDF",
+		})
+
 	const canvasImage = data.signature || false
 
 	const profile = {
