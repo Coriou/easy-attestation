@@ -1,7 +1,7 @@
 {
 	"functions": {
 		"api/attestation.js": {
-			"includeFiles": "src/certificate.pdf"
+			"includeFiles": "attestation-officielle/src/certificate.pdf"
 		}
 	}
 }
