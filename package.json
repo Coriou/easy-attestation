@@ -12,7 +12,7 @@
 		"local": "vercel dev"
 	},
 	"dependencies": {
-		"@hookform/resolvers": "^1.0.0",
+		"@hookform/resolvers": "^1.0.1",
 		"bootstrap": "^4.5.3",
 		"cleave.js": "^1.6.0",
 		"fetch": "^1.1.0",
@@ -22,13 +22,13 @@
 		"react": "16",
 		"react-canvas-draw": "^1.1.1",
 		"react-dom": "16",
-		"react-hook-form": "^6.10.1",
+		"react-hook-form": "^6.11.0",
 		"react-use-storage": "^0.4.3",
-		"reactstrap": "^8.7.0"
+		"reactstrap": "^8.7.1"
 	},
 	"devDependencies": {
 		"parcel-bundler": "^1.12.4",
-		"sass": "^1.28.0",
+		"sass": "^1.29.0",
 		"vercel": "^20.1.2",
 		"yarn": "^1.22.10"
 	}
