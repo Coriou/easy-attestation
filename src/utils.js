@@ -1,10 +1,8 @@
-// import { generateQR } from "./qr"
-// import { generatePdf } from "../attestation-officielle/src/js/pdf-util"
-// import { PDFDocument } from "pdf-lib"
+import { PDFDocument } from "pdf-lib"
 
-const { generateQR } = require("./qr")
-const { generatePdf } = require("../attestation-officielle/src/js/pdf-util")
-const { PDFDocument } = require("pdf-lib")
+const { generateQR } = require("../attestation-officielle/src/js/util")
+const generatePdfOriginal = require("../attestation-officielle/src/js/pdf-util")
+	.generatePdf
 
 // The official generatePdf implementation relies on fetch() and Blob
 // We don't need those browser methods, so I inject them as dummy polyfills
@@ -113,7 +111,7 @@ export function genTime() {
 
 export async function generatePdf(profile, reasons, certificate, canvasImage) {
 	// Use the original generatePdf function
-	const { bytes } = await generatePdf(profile, reasons, certificate)
+	const { bytes } = await generatePdfOriginal(profile, reasons, certificate)
 	let PDF = bytes
 
 	// Manipulate the PDF to apply a signature and replace the QR with correct times
