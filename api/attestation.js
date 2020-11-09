@@ -5,7 +5,7 @@ const { readFileSync } = require("fs")
 const { join } = require("path")
 
 const certificate = readFileSync(
-	join(__dirname, "../", "src", "certificate.pdf")
+	join(__dirname, "../", "attestation-officielle", "src", "certificate.pdf")
 )
 
 module.exports = async (req, res) => {
