@@ -1,6 +1,10 @@
-import { generateQR } from "./qr"
-import { generatePdf } from "../attestation-officielle/src/js/pdf-util"
-import { PDFDocument } from "pdf-lib"
+// import { generateQR } from "./qr"
+// import { generatePdf } from "../attestation-officielle/src/js/pdf-util"
+// import { PDFDocument } from "pdf-lib"
+
+const { generateQR } = require("./qr")
+const { generatePdf } = require("../attestation-officielle/src/js/pdf-util")
+const { PDFDocument } = require("pdf-lib")
 
 // The official generatePdf implementation relies on fetch() and Blob
 // We don't need those browser methods, so I inject them as dummy polyfills
