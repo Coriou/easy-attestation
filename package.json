@@ -9,7 +9,8 @@
 	"scripts": {
 		"build": "parcel build index.html",
 		"dev": "parcel index.html",
-		"local": "vercel dev"
+		"local": "vercel dev",
+		"deploy": "vercel --prod"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^1.0.1",
