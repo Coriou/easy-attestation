@@ -72,7 +72,7 @@ export async function replaceQR(pdf, profile) {
 		width: 92,
 		height: 92,
 	})
-	pdfDoc.addPage()
+	// pdfDoc.addPage()
 	const page2 = pdfDoc.getPages()[1]
 	page2.drawImage(qrImage, {
 		x: 50,
