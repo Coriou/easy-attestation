@@ -33,7 +33,7 @@ test("Generate PDF", async () => {
 		creationHour,
 		datesortie,
 		heuresortie,
-		reasons: "achats",
+		reasons: ["achats", "sport_animaux"],
 	}
 
 	// Generate the PDF then load it back into PDF-LIB to manipulate it

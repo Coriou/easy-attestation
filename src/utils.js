@@ -110,6 +110,8 @@ export function genTime() {
 }
 
 export async function generatePdf(profile, reasons, certificate, canvasImage) {
+	if (Array.isArray(reasons)) reasons = reasons.join(", ")
+
 	// Use the original generatePdf function
 	const { bytes } = await generatePdfOriginal(profile, reasons, certificate)
 	let PDF = bytes
