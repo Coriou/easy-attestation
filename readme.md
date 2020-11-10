@@ -7,6 +7,6 @@
 3. Griffonnez une signature
 4. Générez l'attestation
 
-Une attestation pour motif de "Courses" sera générée automatiquement et l'heure inscrite sera légèrement antérieure à l'heure actuelle.
+Une attestation sera générée automatiquement et l'heure inscrite sera légèrement antérieure à l'heure actuelle.
 
 Rafraichissez la page avec l'attestation pour en obtenir une nouvelle.
