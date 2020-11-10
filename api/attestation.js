@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
 		creationHour,
 		datesortie,
 		heuresortie,
-		reasons: "achats",
+		reasons: data.raisons || "achats",
 	}
 
 	generatePdf(profile, profile.reasons, certificate, canvasImage)

@@ -25,6 +25,19 @@ const schema = Joi.object({
 	adresse: Joi.string().min(3).required(),
 	ville: Joi.string().min(3).required(),
 	codePostal: Joi.string().regex(/^\d+$/).min(5).max(5).required(),
+	raisons: Joi.array().items(
+		Joi.string().valid(
+			"travail",
+			"achats",
+			"sante",
+			"famille",
+			"handicap",
+			"sport_animaux",
+			"convocation",
+			"missions",
+			"enfants"
+		)
+	),
 })
 
 function redirectPost(url, dataToPost) {
@@ -79,15 +92,28 @@ const FormInput = memo(
 			<FormGroup>
 				<Label for={name}>{displayName}</Label>
 				{children ? (
-					cloneElement(children, {
-						type: type,
-						name: name,
-						id: name,
-						key: `formInput_${name}`,
-						placeholder: placeholder,
-						htmlRef: register,
-						autoComplete: "off",
-					})
+					String(children.props.className).match(/isCleave/) ? (
+						cloneElement(children, {
+							type: type,
+							name: name,
+							id: name,
+							key: `formInput_${name}`,
+							placeholder: placeholder,
+							htmlRef: register,
+							autoComplete: "off",
+						})
+					) : (
+						cloneElement(children, {
+							type: type,
+							name: name,
+							id: name,
+							key: `formInput_${name}`,
+							placeholder: placeholder,
+							innerRef: register,
+							defaultValue: ["achats"],
+							autoComplete: "off",
+						})
+					)
 				) : (
 					<Input
 						type={type}
@@ -125,6 +151,9 @@ const ProfilForm = () => {
 				alert("Signature trop complexe. Utilisez une signature plus simple")
 				return false
 			}
+
+		if (data.raisons && Array.isArray(data.raisons))
+			data.raisons = data.raisons.join(", ")
 
 		redirectPost(`${process.env.URL}/api/attestation`, data)
 
@@ -173,7 +202,7 @@ const ProfilForm = () => {
 									delimiter: "/",
 									numericOnly: true,
 								}}
-								className="form-control"
+								className="form-control isCleave"
 								value={formData?.["dateNaissance"]}
 							/>
 						</FormInput>
@@ -213,6 +242,27 @@ const ProfilForm = () => {
 							register={register}
 							errors={errors}
 						/>
+
+						<FormInput
+							name="raisons"
+							displayName="Raison(s)"
+							placeholder="Courses"
+							register={register}
+							errors={errors}
+							type="select"
+						>
+							<Input multiple>
+								<option value="achats">Courses</option>
+								<option value="sport_animaux">Sport / animaux</option>
+								<option value="travail">Travail</option>
+								<option value="handicap">Handicap / accompagnant</option>
+								<option value="sante">Santé</option>
+								<option value="famille">Famille</option>
+								<option value="missions">Mission intérêt général</option>
+								<option value="convocation">Convocation</option>
+								<option value="enfants">Enfants</option>
+							</Input>
+						</FormInput>
 					</Col>
 				</Row>
 
