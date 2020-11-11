@@ -16,7 +16,6 @@
 	"dependencies": {
 		"@hookform/resolvers": "^1.0.1",
 		"bootstrap": "^4.5.3",
-		"cleave.js": "^1.6.0",
 		"fetch": "^1.1.0",
 		"joi": "^17.3.0",
 		"pdf-lib": "^1.11.2",

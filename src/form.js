@@ -1,4 +1,4 @@
-import React, { cloneElement, memo } from "react"
+import React, { cloneElement, memo, useState } from "react"
 import {
 	Container,
 	Row,
@@ -13,7 +13,6 @@ import {
 import Joi from "joi"
 import { useForm } from "react-hook-form"
 import { joiResolver } from "@hookform/resolvers/joi"
-import Cleave from "cleave.js/react"
 import { useLocalStorage } from "react-use-storage"
 import Signature from "./signature"
 
@@ -92,28 +91,16 @@ const FormInput = memo(
 			<FormGroup>
 				<Label for={name}>{displayName}</Label>
 				{children ? (
-					String(children.props.className).match(/isCleave/) ? (
-						cloneElement(children, {
-							type: type,
-							name: name,
-							id: name,
-							key: `formInput_${name}`,
-							placeholder: placeholder,
-							htmlRef: register,
-							autoComplete: "off",
-						})
-					) : (
-						cloneElement(children, {
-							type: type,
-							name: name,
-							id: name,
-							key: `formInput_${name}`,
-							placeholder: placeholder,
-							innerRef: register,
-							defaultValue: ["achats"],
-							autoComplete: "off",
-						})
-					)
+					cloneElement(children, {
+						type: type,
+						name: name,
+						id: name,
+						key: `formInput_${name}`,
+						placeholder: placeholder,
+						innerRef: register,
+						defaultValue: children?.props?.multiple ? ["achats"] : undefined,
+						autoComplete: "off",
+					})
 				) : (
 					<Input
 						type={type}
@@ -130,6 +117,26 @@ const FormInput = memo(
 		)
 	}
 )
+
+const MaskedInput = memo(({ ...props }) => {
+	const [controledValue, setControledValue] = useState("")
+	const handleChange = ({ target: { value } }) => {
+		value = String(value)
+		if (!value) return setControledValue("")
+
+		const lastChar = value.slice(-1)
+		const allowed = /[\d|\/]/
+
+		if (!lastChar.match(allowed)) return false
+		if (value.length > 10) return false
+		if (value.match(/^\d{2}$/) || value.match(/^\d{2}\/\d{2}$/))
+			if (value.length >= controledValue.length) value = `${value}/`
+
+		setControledValue(value)
+	}
+
+	return <Input onChange={handleChange} value={controledValue} {...props} />
+})
 
 const ProfilForm = () => {
 	const [formData, setFormData] = useLocalStorage("easyAttestformData")
@@ -196,15 +203,7 @@ const ProfilForm = () => {
 							register={register}
 							errors={errors}
 						>
-							<Cleave
-								options={{
-									blocks: [2, 2, 4],
-									delimiter: "/",
-									numericOnly: true,
-								}}
-								className="form-control isCleave"
-								value={formData?.["dateNaissance"]}
-							/>
+							<MaskedInput />
 						</FormInput>
 
 						<FormInput
