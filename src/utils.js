@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib"
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib"
 
 const { generateQR } = require("../attestation-officielle/src/js/util")
 const generatePdfOriginal = require("../attestation-officielle/src/js/pdf-util")
@@ -28,7 +28,7 @@ export async function applySignature(pdf, image) {
 	const signature = await pdfDoc.embedPng(image)
 	page1.drawImage(signature, {
 		x: 125,
-		y: 100,
+		y: 20,
 		width: 200,
 		height: 25,
 	})
@@ -64,21 +64,41 @@ export async function replaceQR(pdf, profile) {
 	].join(";\n ")
 
 	const pdfDoc = await PDFDocument.load(pdf)
+	const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
 	const page1 = pdfDoc.getPages()[0]
 	const generatedQR = await generateQR(data)
 	const qrImage = await pdfDoc.embedPng(generatedQR)
 
+	const qrTitle1 = "QR-code contenant les informations "
+	const qrTitle2 = "de votre attestation numérique"
+
+	page1.drawText(qrTitle1 + "\n" + qrTitle2, {
+		x: 415,
+		y: 135,
+		size: 9,
+		font,
+		lineHeight: 10,
+		color: rgb(1, 1, 1),
+	})
+
 	page1.drawImage(qrImage, {
 		x: page1.getWidth() - 156,
-		y: 100,
+		y: 25,
 		width: 92,
 		height: 92,
 	})
 	// pdfDoc.addPage()
 	const page2 = pdfDoc.getPages()[1]
+	page2.drawText(qrTitle1 + qrTitle2, {
+		x: 50,
+		y: page2.getHeight() - 70,
+		size: 11,
+		font,
+		color: rgb(1, 1, 1),
+	})
 	page2.drawImage(qrImage, {
 		x: 50,
-		y: page2.getHeight() - 350,
+		y: page2.getHeight() - 390,
 		width: 300,
 		height: 300,
 	})
