@@ -27,8 +27,8 @@ export async function applySignature(pdf, image) {
 	const page1 = pdfDoc.getPages()[0]
 	const signature = await pdfDoc.embedPng(image)
 	page1.drawImage(signature, {
-		x: 125,
-		y: 20,
+		x: 250,
+		y: 70,
 		width: 200,
 		height: 25,
 	})
@@ -73,9 +73,9 @@ export async function replaceQR(pdf, profile) {
 	const qrTitle2 = "de votre attestation numérique"
 
 	page1.drawText(qrTitle1 + "\n" + qrTitle2, {
-		x: 415,
-		y: 135,
-		size: 9,
+		x: 440,
+		y: 130,
+		size: 6,
 		font,
 		lineHeight: 10,
 		color: rgb(1, 1, 1),

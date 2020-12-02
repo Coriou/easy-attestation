@@ -251,7 +251,7 @@ const ProfilForm = () => {
 							type="select"
 						>
 							<Input multiple>
-								<option value="achats">Courses</option>
+								<option value="achats_culturel_cultuel">Courses</option>
 								<option value="sport_animaux">Sport / animaux</option>
 								<option value="travail">Travail</option>
 								<option value="handicap">Handicap / accompagnant</option>

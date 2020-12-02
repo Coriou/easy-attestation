@@ -9,15 +9,15 @@ const certificate = readFileSync(
 )
 
 // const raisons = {
-// 	travail: 578,
-// 	achats: 533,
-// 	sante: 477,
-// 	famille: 435,
-// 	handicap: 396,
-// 	sport_animaux: 358,
-// 	convocation: 295,
-// 	missions: 255,
-// 	enfants: 211,
+// travail: 553,
+// achats_culturel_cultuel: 482,
+// sante: 434,
+// famille: 410,
+// handicap: 373,
+// sport_animaux: 349,
+// convocation: 276,
+// missions: 252,
+// enfants: 228,
 // }
 
 module.exports = async (req, res) => {
