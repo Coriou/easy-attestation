@@ -27,7 +27,7 @@ const schema = Joi.object({
 	raisons: Joi.array().items(
 		Joi.string().valid(
 			"travail",
-			"achats",
+			"achats_culturel_cultuel",
 			"sante",
 			"famille",
 			"handicap",
